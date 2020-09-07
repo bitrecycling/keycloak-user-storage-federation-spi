@@ -42,6 +42,13 @@ To dive a little deeper into the subject, here's a list of things to get right i
 - that user storage spi needs to use the created datasource 
 - the user storage spi needs to be deployed to keycloak
 
+## Prerequisites / Assumptions
+- Java (11) JDK installed
+- apache maven installed
+- Keycloak 10.x installed
+- sqlserver installed and running, providing a table with user logins and passwords
+- passwords in db are hashed with md5 for the sake of simplicity in this example
+
 
 ## JDBC-Driver and Module
 
