@@ -24,45 +24,20 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
 
   @Override
   public String getUsername() {
-    return userEntity.getLogin();
+    return userEntity.getUsername();
   }
 
   @Override
   public void setUsername(String username) {
-    userEntity.setLogin(username);
+    userEntity.setUsername(username);
   }
 
   @Override
   public String getEmail() {
-    return userEntity.getBezeichnung();
-  }
-
-  @Override
-  public void setEmail(String email) {
-    userEntity.setBezeichnung(email);
-  }
-
-  @Override
-  public String getFirstName() {
-    return userEntity.getLogin();
-  }
-
-  @Override
-  public void setFirstName(String firstName) {
-    userEntity.setLogin(firstName);
-  }
-
-  @Override
-  public String getLastName() {
-    return userEntity.getLogin();
-  }
-
-  @Override
-  public void setLastName(String lastName) {
-    userEntity.setLogin(lastName);
+    return userEntity.getEmail();
   }
   
   public String getPassword(){
-    return userEntity.getPasswort();
+    return userEntity.getPassword();
   }
 }

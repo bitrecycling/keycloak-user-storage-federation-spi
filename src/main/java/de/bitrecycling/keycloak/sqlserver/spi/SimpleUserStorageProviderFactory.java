@@ -37,7 +37,7 @@ public class SimpleUserStorageProviderFactory implements UserStorageProviderFact
 
   @Override
   public String getId() {
-    return "pathowin-db";
+    return "demp-db";
   }
 
   @Override

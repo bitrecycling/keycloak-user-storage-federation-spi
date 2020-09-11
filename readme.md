@@ -1,58 +1,69 @@
-# Keycloak User Federation for Sqlserver (User Storage SPI)
+# Keycloak User Federation for Sqlserver / any db (User Storage SPI)
 
 ## What Is It?
-This project implements a [Keycloak](https://www.keycloak.org) User Storage SPI (also known as user fedaration), which means it enables Keycloak to use an existing (m$ sqlserver in this case) database with user credentials (username, password) to authenticate users (i.e. verify given authentication credentials against those stored in the db).
+This project implements a [Keycloak](https://www.keycloak.org) User Storage SPI (also known as user fedaration), which means it enables Keycloak to use an existing (m$ sqlserver in this case, but you can easily change that to any other supported db!) database with user credentials (username
+, password) to authenticate users. If this doesn't ring a bell, you're problably wrong here.
 
 This project and document was created and tested for and with Java 11 and Keycloak 10.0.2. It should however be applicable to all 10.x versions of Keycloak.
+
+## This document
+This howto shall provide you some understanding how to put all things together and make them work (see next chapters).
 
 ## Motivation
 - needed a working keycloak user federation for an existing sqlserver user database
 - There is lots of different and difficult to understand manuals and howtos floating around, some of them incomplete, mostly referring to outdated keycloak and java versions.
 - got none of them to work out-of-the-box (like copy paste)
-- needed to dig in a little farther than I wish I had to
-- hopefully this project can help you (until it's outdated) to get going without the same amount of hassle
-- I wanted to contribute a little back to the keycloak community, maybe it helps
+- needed to dig in a little deeper than I wish I had to
+- maybe this helps you to get going without the same amount of hassle
+
 
 ## Disclaimer
-I am not sure if this is the most elegant or simple way to go. It was what I found is needed after some tries that works for me and might work for you as well. I am happy about comments on how to improve or other feedback!
+This is what I found works for me and might work for you as well. I am happy about comments on how to improve or other feedback!
 
 ## JEE and Keycloak == wtf
-Keycloak is implemented "in JEE" (Java Platform Enterprise Edition). That means it not only needs Java to run, but also a JEE compliant Application Server. Keycloak comes bundled with one Application Server, Wildfly in this case, formerly known as JBoss. Things are a little more complex than they might need to be, because Application Servers are feature-rich and provide functionalities and customizations for many different scenarios. This makes themselves complex and hence there's some complexity if you need to extend or customize such an Application Server and a software that runs on it. But let's start simple and pretend that you only need to do the following:
+Keycloak is implemented "in JEE" (Java Platform Enterprise Edition). That means it not only needs Java to run, but also a JEE compliant Application Server. Keycloak comes bundled with one Application Server, Wildfly in this case, formerly known as JBoss. Things are a little more complex than they
+might need to be, because Application Servers are feature-rich and provide functionalities and customizations for many different scenarios. This makes themselves complex and hence there's some complexity if you need to extend or customize such an Application Server and a software that runs on it. But let's start simple and pretend that you only need to do the following:
 - connect the Application Server to a db that hosts the existing user/password data.
 - get Keycloak to use that connection to authenticate users
 
 
-## Necessities
-To dive a little deeper into the subject, here's a list of things to get right in order to make things happen:
-- an existing and running db (sqlserver in this case) that contains usernames/logins and passwords. It must be reachable from the machine that hosts keylcoak.
-- the hostname, port, schema and db-user of the aformentioned db must be known
-- a jdbc driver that enables java/jdbc to connect to the aformentioned db. Check if JDBC-Driver version can connect to the existing DB version
-- a keycloak installation that is meant to be customized to use the db for authentication of users
-- knowledge, privileges and tooling (texteditor) how to modify the keycloak configuration
-- knowledge, privileges and tooling to read logs and maybe stop / start / administer the given Keycloak installation
-- knowledge and tooling to modify, build and deploy the given project components (UserModel and so forth) if necessary
-- understanding which parts need to be changed to fit your needs
-- understanding how to put all things together and make them work (see next chapters)
+## What you need
+- Java (11) JDK installed
+- apache maven installed to build the project
+- a keycloak 10.x installation that is meant to be customized to use the db for authentication of users
+- an existing and running sqlserver that contains a table with usernames and passwords. It must be reachable from Keylcoak.
+- the hostname, port, schema and db-user of the aforementioned db must be known
+- passwords in db are hashed with md5 for the sake of simplicity in this example. Otherwise you'd have to modify the SimpleUserStorageProvider (actually the overridden CredentialInputValidator#isValid)
+
+
+## Assumptions 
+- you have some knowledge, privileges and tooling to modify the keycloak configuration, read logs, administer Keycloak
+- you have some knowledge and tooling to modify, build and deploy the given project components (UserModel and so forth) if necessary
+- some understanding which parts need to be changed to fit your needs
 
 
 ## Coarse Overview: what goes where
+The following is a 
 - JDBC-Driver has to be downloaded, wrapped as a "module" which in turn needs to be installed (deployed) to Keycloak
 - a datasource that uses this JDBC-Driver-Module needs to be created in Keycloak
 - a User Storage SPI has to be created (customized in your case if you use this project's source)
 - that user storage spi needs to use the created datasource 
 - the user storage spi needs to be deployed to keycloak
 
-## Prerequisites / Assumptions
-- Java (11) JDK installed
-- apache maven installed
-- Keycloak 10.x installed
-- sqlserver installed and running, providing a table with user logins and passwords
-- passwords in db are hashed with md5 for the sake of simplicity in this example
-
 
 ## JDBC-Driver and Module
+This is the necessary driver, to connect Keycloak (actually wildfly) to the database. If you do not use ms sqlserver this is where you need to diverge. Search for your database's JDBC driver and documentation.
 
-### download and install JDBC-Driver
+steps:
+- The driver has to be downloaded and copied to a new directory.
+- In this directory we also need a "module.xml"-file to be created, that contains some meta-information on the JDBC driver.
+- the directory has to be deployed to Keycloak
+- the Keycloak config has to be adapted to load the driver
+- the Keycloak config has to be adapted to add the db username and password
+
+see https://www.adam-bien.com/roller/abien/entry/installing_oracle_jdbc_driver_on
+
+### download and install sqlserver JDBC-Driver
 - download mssql jdbc driver from ```https://docs.microsoft.com/de-de/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15```
 - copy to (for jre 11) to new dir "mssqlserver".
 
@@ -75,34 +86,32 @@ To dive a little deeper into the subject, here's a list of things to get right i
 ```<path to keycloak>/keycloak-10.0.2/modules/system/layers/base/com/microsoft```
 
 #### adapt standalone.xml
+##### location of the config file
 ```<path to keycloak>/keycloak-10.0.2/standalone/standalone.xml```
 
-#### add jdbc driver 
+##### add jdbc driver 
 ```
-<driver name="sqlserver" module="com.microsoft.sqlserver">
+<driver name="sqlserver" module="com.microsoft.sqlserver"> <!-- driver name can be chosen, module is given by vendor (see documentation) -->
     <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
     <!-- xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</xa-datasource-class -->
 </driver>
 ```
-
-### adapt DB-credentials according to existing user mssql:
-
-####  add datasource that uses the new JDBC-driver
+##### add datasource that uses the new JDBC-driver
 1) find this text in configuration file ```jndi-name="java:jboss/datasources/demoDS"```
 2) under ```...<security>...</security>``` change ```<user-name>``` and ```<password>``` to correspond db user credentials
 example:
 ```
 <datasource jta="false" jndi-name="java:jboss/datasources/demoDS" pool-name="demoDS">
     <connection-url>jdbc:sqlserver://localhost\DemoDB;DB_CLOSE_DELAY=-1</connection-url>
-    <driver>sqlserver</driver>
+    <driver>sqlserver</driver> <!-- this must match the jdbc driver name -->
     <pool>
         <min-pool-size>1</min-pool-size>
         <max-pool-size>3</max-pool-size>
         <prefill>true</prefill>
     </pool>
     <security>
-        <user-name>demo</user-name>
-        <password>demo</password>
+        <user-name>demo</user-name> <!-- this is the db user -->
+        <password>demo</password> <!-- this is the db user password -->
     </security>
 </datasource>
 ```

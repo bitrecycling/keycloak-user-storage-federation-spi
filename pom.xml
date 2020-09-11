@@ -34,20 +34,25 @@
         </dependency>
         
         <!-- provided dependencies in keycloak / wildfly  -->
+        <!-- provided means they are already available in the application server  and are not bundled in the jar / war / ear-->
+        <!-- necessary program against the keycloak apis -->
+        
+        <!-- core keycloak lib -->
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
             <version>${keycloak.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        <!-- this is the extension point for the spi -->
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-server-spi</artifactId>
             <version>${keycloak.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        
+        <!-- also provided, necessary for logging -->
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
@@ -55,12 +60,15 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- for accessing db via orm -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>${version.hibernate.javax.persistence}</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- jee / jbossy stuff -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>

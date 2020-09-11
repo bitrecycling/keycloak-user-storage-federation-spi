@@ -1,0 +1,22 @@
+
+*.idea
+*.iml
+
+# osx
+.DS_Store
+Desktop.ini
+.Spotlight-V100
+._*
+.Trashes
+Thumbs.db
+
+*.log
+
+# java
+hs_err_pid*
+*.class
+
+*.jar
+*.war
+*.ear
+

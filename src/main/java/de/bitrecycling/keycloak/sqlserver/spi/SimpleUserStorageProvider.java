@@ -90,6 +90,13 @@ public class SimpleUserStorageProvider implements UserStorageProvider,
     return supportsCredentialType(credentialType) && getPassword(user) != null;
   }
 
+  /**
+   * assumes that passwords are md5 hashed and compares the stored password to the given (entered) password. 
+   * @param realm
+   * @param user
+   * @param input
+   * @return
+   */
   @Override
   @SneakyThrows
   public boolean isValid(RealmModel realm, UserModel user, CredentialInput input) {
