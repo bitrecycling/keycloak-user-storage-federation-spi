@@ -20,7 +20,7 @@ This howto shall provide you some understanding how to put all things together a
 ## Disclaimer
 This is what I found works for me and might work for you as well. I am happy about comments on how to improve or other feedback!
 
-## JEE and Keycloak == wtf
+## JEE and Keycloak
 Keycloak is implemented "in JEE" (Java Platform Enterprise Edition). That means it not only needs Java to run, but also a JEE compliant Application Server. Keycloak comes bundled with one Application Server, Wildfly in this case, formerly known as JBoss. Things are a little more complex than they
 might need to be, because Application Servers are feature-rich and provide functionalities and customizations for many different scenarios. This makes themselves complex and hence there's some complexity if you need to extend or customize such an Application Server and a software that runs on it. But let's start simple and pretend that you only need to do the following:
 - connect the Application Server to a db that hosts the existing user/password data.
