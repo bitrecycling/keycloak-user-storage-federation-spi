@@ -1,7 +1,7 @@
-# Keycloak User Federation for Sqlserver / any db (User Storage SPI)
+# Keycloak User Federation (User Storage SPI) for Sqlserver / any db 
 
 ## What Is It?
-This project implements a [Keycloak](https://www.keycloak.org) User Storage SPI (also known as user fedaration), which means it enables Keycloak to use an existing (m$ sqlserver in this case, but you can easily change that to any other supported db!) database with user credentials (username
+This project implements a [Keycloak](https://www.keycloak.org) User Storage SPI also known as user fedaration, which means it enables Keycloak to use an existing (m$ sqlserver in this case, but you can easily change that to any other supported db!) database with user credentials (username
 , password) to authenticate users. If this doesn't ring a bell, you're problably wrong here.
 
 This project and document was created and tested for and with Java 11 and Keycloak 10.0.2. It should however be applicable to all 10.x versions of Keycloak.
