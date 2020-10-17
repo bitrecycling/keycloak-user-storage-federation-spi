@@ -1,4 +1,4 @@
-# Keycloak User Federation for Sqlserver / any db (User Storage SPI)
+# Keycloak User Federation (User Storage SPI) for Sqlserver / any db 
 
 ## What Is It?
 This project is a howto and implementation of a [Keycloak](https://www.keycloak.org) User Storage SPI, also known as user federation. It enables Keycloak to use an existing database with user credentials (username, password) to authenticate users. The implementation is done for m$ sqlserver, but you can easily change that (see further below) to any other supported db.
