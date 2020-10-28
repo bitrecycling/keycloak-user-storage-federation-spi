@@ -36,11 +36,11 @@ In this expample passwords are hashed with md5 for the sake of simplicity and av
 
 
 ## Coarse Overview: necessary steps
-1. JDBC-Driver has to be downloaded, wrapped as a "module" which in turn needs to be installed (deployed) to Keycloak
-2. a datasource that uses this JDBC-Driver-Module needs to be created in Keycloak
-3. a User Storage SPI has to be created (customized in your case if you use this project's source)
-4. that user storage spi needs to be configured to use the created datasource 
-5. the configured user storage spi needs to be deployed to keycloak
+1. __JDBC-Driver__ has to be downloaded, wrapped as a __"module"__ which in turn needs to be installed (deployed) to Keycloak
+2. a __Datasource__ that uses this _JDBC-Driver-Module_ needs to be created in Keycloak
+3. a __User Storage SPI__ has to be created (customized in your case if you use this project's source)
+4. that _user storage spi_ needs to be configured to use the created _datasource_ 
+5. the configured _user storage spi_ needs to be __deployed to keycloak__
 
 
 # Step by Step
