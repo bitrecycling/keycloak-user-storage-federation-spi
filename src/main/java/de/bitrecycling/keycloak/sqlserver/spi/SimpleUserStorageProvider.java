@@ -74,6 +74,12 @@ public class SimpleUserStorageProvider implements UserStorageProvider,
     return new UserAdapter(session, realm, model, result.get(0));
   }
 
+  /**
+   * note: not needed for the demo, implement properly if you inted to have users identified by email!
+   * @param email user's email address
+   * @param realm the keycloak realm the user / client is configured for
+   * @return
+   */
   @Override
   public UserModel getUserByEmail(String email, RealmModel realm) {
     throw new RuntimeException("not implemented!");
@@ -91,10 +97,13 @@ public class SimpleUserStorageProvider implements UserStorageProvider,
   }
 
   /**
-   * assumes that passwords are md5 hashed and compares the stored password to the given (entered) password. 
-   * @param realm
-   * @param user
-   * @param input
+   * assumes that passwords are md5 hashed and compares the stored password to the given (entered) password.
+   * PLEASE NOTE: this is a demo, md5 is not considered secure anymore for password hashing! consider eg. bcrypt oder scrypt and/or salting!  
+   * if another hashing algo is desired, change accordingly!  
+   * 
+   * @param realm the keycloak realm to validate / authenticate against
+   * @param user the user to be validated / authenticated
+   * @param input user's credentials
    * @return
    */
   @Override
