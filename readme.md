@@ -1,9 +1,12 @@
 # Keycloak User Federation (User Storage SPI) for Sqlserver / any db 
 
+## Likely Outdated
+This project and document was __created and tested for and with Java 11 and Keycloak 10.0.2.__ It should however be applicable to all 10.x versions of Keycloak.
+
+Current version (October 2022) of keycloak is 19.0.3, so likely some details will be outdated or not necessary anymore, just so you know. I might update this guide if I find the time.
+
 ## What Is It?
 This project is a howto and implementation of a [Keycloak](https://www.keycloak.org) User Storage SPI, also known as user federation. It enables Keycloak to use an existing database with user credentials (username, password) to authenticate users. The implementation is done for m$ sqlserver, but you can easily change that (see further below) to any other supported db.
-
-This project and document was created and tested for and with Java 11 and Keycloak 10.0.2. It should however be applicable to all 10.x versions of Keycloak.
 
 
 ## Motivation
